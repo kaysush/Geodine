@@ -42,7 +42,6 @@ public class LoginAuthentication extends HttpServlet {
             String dbUser=getServletContext().getInitParameter("dbUser");
             String dbPassword=getServletContext().getInitParameter("dbPassword");
             String dbName=getServletContext().getInitParameter("dbName");
-            //out.println(dbName+" "+dbPassword+" "+dbHost+" "+dbName);
             con=new DBConnection(dbUser,dbPassword,dbHost,dbName);
             
             boolean correctCredentials=con.login(request.getParameter("user-name"), request.getParameter("user-pass"));
@@ -51,11 +50,11 @@ public class LoginAuthentication extends HttpServlet {
                 
                 session.setAttribute("user-name", request.getParameter("user-name"));
                 
-                response.sendRedirect("http://localhost:8080/geodine");
+                response.sendRedirect("/geodine");
             }
             else
             {
-                response.sendRedirect("http://localhost:8080/geodine/login.jsp?error=true");
+                response.sendRedirect("/geodine/login.jsp?error=true");
             }
              
         } finally {            

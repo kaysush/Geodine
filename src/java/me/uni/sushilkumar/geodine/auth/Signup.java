@@ -49,7 +49,6 @@ public class Signup extends HttpServlet {
             String pass=request.getParameter("user-pass");
             boolean alreadyExists=con.alreadyExists(email);
             if(alreadyExists)
-                //response.sendRedirect("http://localhost:8080/geodine?exists=true");
                 out.println("Email already exists");
             else
             {
