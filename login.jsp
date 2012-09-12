@@ -43,7 +43,7 @@
         
         else
        {
-           response.sendRedirect("http://localhost:8080/geodine/app.jsp");
+           response.sendRedirect("app.jsp");
        }
        %>
     </body>

@@ -15,7 +15,7 @@
         <%
         if(session.getAttribute("user-name")==null)
         {
-            response.sendRedirect("http://localhost:8080/geodine/login.jsp?login=none");
+            response.sendRedirect("login.jsp?login=none");
                        
         %>
         

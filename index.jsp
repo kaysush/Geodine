@@ -49,7 +49,7 @@
                }
         else
        {
-           response.sendRedirect("http://localhost:8080/geodine/app.jsp");
+           response.sendRedirect("app.jsp");
        }
        %>
         <!--font color="green">Hurray... you are logged in <%=session.getAttribute("user-name")%></font>-->
