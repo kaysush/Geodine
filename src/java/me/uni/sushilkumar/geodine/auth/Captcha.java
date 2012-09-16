@@ -4,15 +4,19 @@
  */
 package me.uni.sushilkumar.geodine.auth;
 
+import java.awt.FontFormatException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,11 +33,14 @@ public class Captcha extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, FontFormatException {
         response.setContentType("image/png");
         OutputStream out=response.getOutputStream();
         try {
             CaptchaGenerator captchaGen=new CaptchaGenerator(197,50);
+            String code=captchaGen.getCode();
+            HttpSession session=request.getSession(true);
+            session.setAttribute("captcha-code",code);
             BufferedImage captcha=captchaGen.createImage();
             ImageIO.write(captcha, "png", out);
             
@@ -53,7 +60,11 @@ public class Captcha extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (FontFormatException ex) {
+            Logger.getLogger(Captcha.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 
@@ -66,7 +77,11 @@ public class Captcha extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (FontFormatException ex) {
+            Logger.getLogger(Captcha.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 

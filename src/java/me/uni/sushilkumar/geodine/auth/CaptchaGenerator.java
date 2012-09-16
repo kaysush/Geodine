@@ -24,6 +24,7 @@ public class CaptchaGenerator {
 private char[] chars={'a','b','5','c','d','e','f','g','1','h','i','7','j','k','l','0','m','n','o','p','q','r','s','t','u','v','8','w','x','y','6','z',
 'A','B','4','C','D','E','F','3','G','H','I','J','K','L','M','N','2','O','P','Q','R','S','T','U','V','W','X','Y','9','Z',
 };
+private String code;
 
 	public CaptchaGenerator()
 	{
@@ -52,7 +53,7 @@ private char[] chars={'a','b','5','c','d','e','f','g','1','h','i','7','j','k','l
 	{
 		BufferedImage captcha=new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR );
 		Graphics2D g=captcha.createGraphics();
-		String code=generateRandomCode(6);
+		code=generateRandomCode(6);
 		System.out.println(code);
 		g.setColor(Color.WHITE);
 		g.fill(new Rectangle2D.Float(0,0,width,height));
@@ -95,6 +96,11 @@ private char[] chars={'a','b','5','c','d','e','f','g','1','h','i','7','j','k','l
                 g.dispose();
 		
 	}
+        
+        public String getCode()
+        {
+            return code;
+        }
 	
     
 }
