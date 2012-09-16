@@ -6,11 +6,13 @@ package me.uni.sushilkumar.geodine.auth;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 /**
@@ -46,7 +48,7 @@ private char[] chars={'a','b','5','c','d','e','f','g','1','h','i','7','j','k','l
 		return code.toString();
 	}
 	
-	public BufferedImage createImage() throws IOException
+	public BufferedImage createImage() throws IOException, FontFormatException
 	{
 		BufferedImage captcha=new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR );
 		Graphics2D g=captcha.createGraphics();
@@ -55,12 +57,15 @@ private char[] chars={'a','b','5','c','d','e','f','g','1','h','i','7','j','k','l
 		g.setColor(Color.WHITE);
 		g.fill(new Rectangle2D.Float(0,0,width,height));
 		g.setColor(Color.RED);
-		Font font=new Font("Arial",Font.BOLD,35);
+		InputStream in = CaptchaGenerator.class.getResourceAsStream("captcha.ttf");
+                Font font = Font.createFont(Font.TRUETYPE_FONT, in);
+                font=font.deriveFont(30.0F);
+                //Font font=new Font("Arial",Font.PLAIN,40);
 		FontMetrics metrics = g.getFontMetrics(font);
 		g.setFont(font);
 		int actualWidth=metrics.stringWidth(code);
 		int leftPadding=(width-actualWidth)/2;
-		g.drawString(code,leftPadding,42);
+		g.drawString(code,leftPadding,37);
 		addNoise(captcha);
                 g.dispose();
                 return captcha;
@@ -72,13 +77,13 @@ private char[] chars={'a','b','5','c','d','e','f','g','1','h','i','7','j','k','l
 		long totalPixels=width*height;
 		int i;
 		Random generator=new Random();
-		for(i=0;i<totalPixels/2;i++)
+		for(i=0;i<totalPixels/3;i++)
 		{
 			captcha.setRGB(generator.nextInt(width),generator.nextInt(height),5);
 		}
 
 		Graphics2D g=captcha.createGraphics();
-		for(i=0;i<25;i++)
+		for(i=0;i<15;i++)
 		{
 			int x1=generator.nextInt(width);
 			int y1=generator.nextInt(height);
