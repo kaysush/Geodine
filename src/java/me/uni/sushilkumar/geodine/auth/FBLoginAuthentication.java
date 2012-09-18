@@ -62,7 +62,8 @@ public class FBLoginAuthentication extends HttpServlet {
             response.sendRedirect("http://projects-sushilkumar.rhcloud.com/geodine");
 
             
-        } finally {            
+        } finally {    
+            br.close();
             
         }
     }
