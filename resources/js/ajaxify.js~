@@ -1,0 +1,12 @@
+$(document).ready(function()
+{
+	$(".button").click(function()
+	{
+		$(".button").attr("value","loggin in...");
+		$(".button").attr("disabled","true");
+		var email=$(".email").val();
+		var pass=$(".password").val();
+		$.ajax();
+		return false;
+	});
+});

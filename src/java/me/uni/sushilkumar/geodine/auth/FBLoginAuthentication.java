@@ -36,6 +36,7 @@ public class FBLoginAuthentication extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out=response.getWriter();
         try {
            String code=request.getParameter("code"),auth_code="",responseStr,jsonResponse="",jsonResponse1="",id="";
         int index=0,index1=0,index2=0;
@@ -57,14 +58,27 @@ public class FBLoginAuthentication extends HttpServlet {
             JSONObject obj=(JSONObject)json;
             String email=(String) obj.get("email");
             String name=(String) obj.get("name");
-            session.setAttribute("user-name", email);
+            session.setAttribute("userName", email);
             session.setAttribute("name", name);
-            response.sendRedirect("http://projects-sushilkumar.rhcloud.com/geodine");
+            session.setAttribute("access_token", auth_code);
+            response.sendRedirect("/geodine/app.jsp");
+            /*out.println(" <!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<script type=\"text/javascript\">");
+            out.println("function init()");
+            out.println("{");
+            out.println("window.close();");
+            out.println("}");
+            out.println("</script>");
+            out.println("</head>");
+            out.println("<body onload=\"init()\">");
+            out.println("</body>");
+            out.println("</html>");*/
 
             
-        } finally {    
-            br.close();
-            
+        } finally {            
+            out.close();
         }
     }
 

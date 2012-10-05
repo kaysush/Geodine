@@ -6,6 +6,8 @@ package me.uni.sushilkumar.geodine.auth;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,14 +15,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import me.uni.sushilkumar.geodine.db.DBConnection;
+import me.uni.sushilkumar.geodine.util.Mailer;
 
 /**
  *
  * @author sushil
  */
-public class LoginAuthentication extends HttpServlet {
+public class Recover extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,45 +32,71 @@ public class LoginAuthentication extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
-        HttpSession session = request.getSession(true);
-        response.setContentType("text/html");
+            throws ServletException, IOException, NoSuchAlgorithmException, SQLException {
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         DBConnection con = null;
         try {
-
             /* The DB LOGIN logic  */
             String dbHost = getServletContext().getInitParameter("dbHost");
             String dbUser = getServletContext().getInitParameter("dbUser");
             String dbPassword = getServletContext().getInitParameter("dbPassword");
             String dbName = getServletContext().getInitParameter("dbName");
-            String email = request.getParameter("user-name");
             con = new DBConnection(dbUser, dbPassword, dbHost, dbName);
 
-            boolean requestedReset = con.hasRequestedPasswordReset(email);
-            if (requestedReset) {
-                //response.sendRedirect("/geodine/login.jsp?request_reset=true");
-                out.println("Error!!! Password Recovery is Requested");
+            String email = request.getParameter("email");
+            String type = request.getParameter("type");
+            String password = request.getParameter("password");
+            if (type.equals("recovery")) {
+                if (con.alreadyExists(email)) {
+                    if (con.hasRequestedPasswordReset(email)) {
+                        out.println("Already requested");
+                    } else {
+                        CaptchaGenerator captchaGen = new CaptchaGenerator();
+                        String resetcode = captchaGen.getCode();
+                        resetcode = encrypt(resetcode);
 
-            } else {
-                boolean correctCredentials = con.login(email, request.getParameter("user-pass"));
-                if (correctCredentials) {
-
-                    session.setAttribute("userName", email);
-
-                    //response.sendRedirect("/geodine/app.jsp");
-                    out.println("loggedin");
+                        Mailer mailer = new Mailer("info.geodine@gmail.com", "Sarvesh0@");
+                        String body = "Goto http://projects-sushilkumar.rhcloud.com/geodine/recover/" + resetcode;
+                        System.out.println("http://projects-sushilkumar.rhcloud.com/geodine/recover/" + resetcode);
+                        //boolean send = mailer.send(email, "Geodine Password Reset Request", body);
+                        boolean send=true;
+                        if (!send) {
+                            out.println("Unable to process the request");
+                        } else {
+                            con.requestForgotPassword(email, resetcode);
+                            out.println("Instructions for Pasword recovery has been mailed to you.");
+                        }
+                    }
                 } else {
-                    //response.sendRedirect("/geodine/login.jsp?login_attempt=true");
-                    out.println("Error!!! Wrong login credentials");
-
+                    out.println("Email not found");
                 }
+            } else {
+                try {
+                    con.requestPasswordUpdate(email, password);
+                    out.println("Reset Password Successful");
+                } catch (SQLException ex) {
+                    Logger.getLogger(Recover.class.getName()).log(Level.SEVERE, null, ex);
+                    out.println("Reset Password Failed!!!!");
+                }
+
             }
-
         } finally {
-
+            out.close();
             con.close();
         }
+
+    }
+
+    public String encrypt(String pass) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(pass.getBytes());
+        byte[] passData = md.digest();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < passData.length; i++) {
+            sb.append(Integer.toHexString(0xFF & passData[i]));
+        }
+        return sb.toString();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -111,9 +139,13 @@ public class LoginAuthentication extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginAuthentication.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                processRequest(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(Recover.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Recover.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
