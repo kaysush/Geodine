@@ -1,113 +1,271 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<c:if test="${sessionScope.userName==null}">
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+    <!DOCTYPE  html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Geodine-A new approach for foodies</title>
 
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <link href='http://fonts.googleapis.com/css?family=Skranji:700' rel='stylesheet' type='text/css'/>
-        <link href='http://fonts.googleapis.com/css?family=Cagliostro' rel='stylesheet' type='text/css'/>
-        <link href='http://fonts.googleapis.com/css?family=Metamorphous' rel='stylesheet' type='text/css'/>
-        <link href='http://fonts.googleapis.com/css?family=Oregano' rel='stylesheet' type='text/css'/>
-        <link href='http://fonts.googleapis.com/css?family=Archivo+Black' rel='stylesheet' type='text/css'/>
-        <link rel="stylesheet" type="text/css" href="resources/css/style.css" />
-        <link href='http://fonts.googleapis.com/css?family=Lato:700,400italic' rel='stylesheet' type='text/css'>
-        <script src="resources/js/jquery-1.8.1.min.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-        <script src="resources/js/main.js" type="text/javascript"></script>
-        <script src="resources/js/ajaxify.js" type="text/javascript"></script>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Geodine-A new approach for foodies</title>
-    </head>
+            <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+            <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+            <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-    <body>
-        <c:if test="${sessionScope.userName==null}">
-            <div class="framecon">
-                <div class="header">
-                    <div class="headlogo">
-                        <div class="headlogotext">Geodine
-                        </div>
+
+            <!--[if IE]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+            <!-- ENDS JS -->
+
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+            <script type="text/javascript" src="js/custom.js"></script>
+            <script src="js/slides/source/slides.min.jquery.js"></script>
+            <script src="js/ajaxify.js" type="text/javascript"></script>
+            <script src="js/jquery.backstretch.min.js" type="text/javascript"></script>
+            <script src="js/jQueryRotate.2.2.js"></script>
+
+            <link href='http://fonts.googleapis.com/css?family=Bubbler+One' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=Boogaloo' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=Finger+Paint' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=McLaren' rel='stylesheet' type='text/css'>
+
+        </head>
+        <body>
+
+            <div id="headernav">
+                <div id="back" class="btn"></div>
+                <div id="next" class="btn"></div>
+            </div>
+
+
+            <div id="top-gap"></div>
+
+
+            <div class="wrapper">
+
+                <a class="logohead" href=""><img id="logo" src="img/logo.png" alt="Geodine"  ></a>
+
+
+
+                <div id="nav-bar-holder">
+                    <div class="navbar">
+                        <ul>
+                            <li>
+                                <img src="img/home.png" height="64" width="64" alt="home" />
+                                <span>Home</span>
+                            </li>
+                            <li>
+                                <img src="img/app.png" height="64" width="64" alt="Goto to App" />
+                                <span>Goto App</span>
+                            </li>
+                            <li>
+                                <img src="img/blog.png" height="64" width="64" alt="Visit our blog" />
+                                <span>Visit  our Blog</span>
+                            </li>
+                            <li>
+                                <img src="img/contactus.png" height="64" width="64" alt="Contact Us" />
+                                <span>Contact Us</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="headlamp"></div>
+
+
+
+
                     <div class="headlogin">
-                        <button href="#login-box" class="login-window orange" class="loginbutton">Login/SignUp</button>
+                        <button  class="login-window orange">Login/SignUp</button>
                     </div>
-                    <div class="services">
-                        <div class="servicestext">
-                            <text>Powered By</text>
-                            <ul>
-                                <li><a href="http://yummly.com" title="Yummly Recepie Search">Yummly</a></li>
-                                <li><a href="http://maps.google.com" title="Google Maps">Google Maps</a></li>
-                                <li><a href="https://openshift.redhat.com/app/" title="Openshift Cloud Hosting">OpenShift</a></li>
-                                <li><a href="https://developers.google.com/maps/documentation/javascript/geocoding" title="Google Reverse Geocoding">Google Geocoding</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div id="slideshow">
-                        <div id="slideimage">
-                            <img src="resources/images/slide1.jpg" name="slide" width="594" height="227"  />
-                        </div>
-                    </div>
-
                 </div>
-                <div class="container">
-                    <div class="quote">
-                        <div class="quotetext">
-                            <h1>Quote of Day</h1>
-                            A man can live and be healthy without killing animals for food; therefore, if he eats meat, he participates in taking animal life merely for the sake of his appetite. 
-                        </div>
-                    </div>
 
 
+
+                <div id="content-wrap">
                     <div id="login-box" class="login-popup">
-                        <a href="#" class="close"><img src="resources/images/close_pop.png" class="btn_close" title="Close Window" alt="Close" /></a>
+                        <a href="#" class="close"><img src="img/close_pop.png" class="btn_close" title="Close Window" alt="Close" /></a>
                         <div id="login">  
                             <h1>User Login</h1>
-                            <form method="POST" class="signin"action="auth/login">
-                                <text class="status"></text></br>
-                                <label for="user-name">Email</label></br>
-                                <input type="text" name="user-name" class="formtextfield email"/></br></br>
-                                <label for="user-pass">Password</label></br>
-                                <input type="password" name="user-pass" class="formtextfield password"/></br>
-                                </br><input type="submit" name="login" value="Login" class="button"/>
-                                <a class="forgot" href="recover.jsp">Forgot your password?</a>  
+                            <form method="POST" class="signin" action="auth/login">
+                                <span class="status"></span><br/>
+                                <label for="user-name1">Email&nbsp;&nbsp;</label>
+                                <input id="user-name1" type="text" name="user-name" class="formtextfield email"/><br/><br/>
+                                <label for="user-pass">Password&nbsp;&nbsp;</label>
+                                <input id="user-pass" type="password" name="user-pass" class="formtextfield password"/><br/>
+                                <br/><input id="login-button" type="submit" name="login" value="Login" class="button"/><br/>
+
                             </form>
-                            <p>or</p>
-                            <img class="fblogin" src="resources/images/facebook-login.png"/></br></br></br></br>
+                            <img class="login-loader" src="img/loading.gif" alt="loading" />
+                            <br/><a class="forgot" href="recover.jsp">Forgot your password?</a>
+
+                            <br/><p>or</p>
+                            <img class="fblogin" src="img/facebook-login.png" alt="Login With Facebook" /><br/><br/><br/><br/>
                             <a href="#" id="signuppress"> Sign Up for new users</a>
                         </div>       
 
                         <div id="signup">
                             <h1>Signup for new users</h1>
+                            <span id="signup-status">Error!!! First Name Required</span>
                             <form method="post" class="signup" action="signup">
-                                <label for="first-name">First Name</label></br>
-                                <input type="text" name="first-name" class="formtextfield"/></br>
-                                <label for="last-name">Last Name</label></br>
-                                <input type="text" name="last-name" class="formtextfield"/></br>
-                                <label for="user-name">Email</label></br>
-                                <input type="text" name="user-name" class="formtextfield"/></br>
-                                <label for="user-pass">Password</label></br>
-                                <input type="password" name="user-pass" class="formtextfield"/></br> 
-                                <label for="user-pass">Confirm Password</label></br>
-                                <input type="password" name="user-pass2" class="formtextfield"/></br>
-                                <img src="auth/captcha"/></br>
-                                <input type="text" name="captcha-code" class="formtextfield"/></br>
-                                <input type="submit" name="signup" value="Signup" class="button"/></br></br>
+                                <label for="fname">First Name&nbsp;&nbsp;</label>
+                                <input id="fname" type="text" name="first-name" class="formtextfield"/><br/><br/>
+                                <label for="lname">Last Name&nbsp;&nbsp;</label>
+                                <input id="lname" type="text" name="last-name" class="formtextfield"/><br/><br/>
+                                <label for="user-name">Email&nbsp;&nbsp;</label>
+                                <input id="user-name" type="text" name="user-name" class="formtextfield"/><br/><br/>
+                                <label for="password1">Password&nbsp;&nbsp;</label>
+                                <input id="password1" type="password" name="user-pass" class="formtextfield"/><br/><br/>
+                                <label for="password2">Re-Enter&nbsp;&nbsp;</label>
+                                <input id="password2" type="password" name="user-pass2" class="formtextfield"/><br/><br/>
+                                <img class="captcha-image" src="auth/captcha" alt="CAPTCHA" /><br/>
+                                <label for="captcha-code">CAPTCHA&nbsp;&nbsp;</label>
+                                <input id="captcha-code" type="text" name="captcha-code" class="formtextfield"/><br/>
+                                <input id="signup-button" type="submit" name="signup" value="Signup" class="button"/><br/><br/>
                             </form>
+                            <img class="signup-loader" src="img/loading.gif" alt="loading" />
                         </div>
                     </div>
 
-                    <div class="footer"></div>
+                    <div id="page-wrap">
 
+
+
+                        <div id="front-slides">
+                            <div class="slides_container">
+                                <div class="slide">
+                                    <img src="img/dummies/1.jpg"  alt="Geodine" width="940" height="360"  />
+                                    <div class="caption">Geodine-A new approach for foodies</div>
+                                </div>
+                                <div class="slide">
+                                    <img src="img/dummies/2.jpg" alt="Geodine" width="940" height="360"  />
+                                    <div class="caption">It lets you browse recipies from all over world.</div>
+                                </div>
+                                <div class="slide">
+                                    <img src="img/dummies/3.jpg" alt="Geodine" width="940" height="360"  />
+                                    <div class="caption">Browse cuisines and beverages against geographical locations.</div>
+                                </div>
+                            </div>
+
+                            <div id="front-slides-cover"></div>
+
+
+                            <div id="headline"><h6>Geodine-A new approach for foodies</h6></div>
+
+
+                        </div>
+
+
+
+
+                        <div id="reel">
+                            <div class="slides_container">
+
+                                <div class="slide-box">
+                                    <div class="box-container">
+                                        <img src="img/aboutus.png" class="box-icon" alt="pic" height="32" width="32"/>
+                                        <h6>About Us</h6>
+                                        <div class="box-divider"></div>
+                                        <b>Geodine</b> is a service which will change the way foodies explore their food.
+                                    </div>
+                                    <div class="box-container">
+                                        <img src="img/facts.png" class="box-icon" alt="pic" height="32" width="32"/>
+                                        <h6>Food Facts</h6>
+                                        <div class="box-divider"></div>
+                                        <div class="box-content"><img src="img/loading.gif" alt="loader"/>
+                                        </div>
+                                    </div>
+                                    <div class="box-container">
+                                        <img src="img/blogs.png" class="box-icon" alt="pic" height="32" width="32"/>
+                                        <h6>Recent Blog Post</h6>
+                                        <div class="box-divider"></div>
+                                        <div class="blog-feed">
+                                            <img src="img/loading.gif" alt="loader"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="featured-title">
+                            <div class="ribbon"><span>Geodine Special</span></div>
+
+                        </div>
+                        <div class="featured">
+                            <div class="youtube">
+                                <iframe id="ytplayer" type="text/html" width="380" height="280" src="https://www.youtube.com/embed/XNAnfWpWEMg" >
+                                </iframe>
+                            </div>
+                            <div class="recipeoftheday">
+                                <h6>What's Cooking</h6>
+                                <img src="img/loading.gif" alt="loader"/>
+                                <div class="food-feeds"><ul></ul></div>
+
+                            </div>
+                            <div class="poweredby">
+                                <h6>Powered By</h6>
+                                <br/>
+                                <ul>
+                                    <li><a href="http://yummly.com" title="Yummly Recepie Search">Yummly</a></li>
+                                    <li><a href="http://maps.google.com" title="Google Maps">Google Maps</a></li>
+                                    <li><a href="https://openshift.redhat.com/app/" title="Openshift Cloud Hosting">OpenShift</a></li>
+                                    <li><a href="https://developers.google.com/maps/documentation/javascript/geocoding" title="Google Reverse Geocoding">Google Geocoding</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-        </c:if>
-        <c:if test="${sessionScope.userName!=null}">
-            <h1>Logged In</h1>
-            <c:redirect url="app.jsp"/>  
+            <br/>
+
+
+            <div id="footer-bottom">
+
+                <div class="bottom-wrapper">
+                    <div id="bottom-left">
+                        <div class="social">
+                            <span>Feeling little social? Spread the buzz, share with your friends</span><br/>
+                            <ul>
+                                <li>
+                                    <img src="img/facebook.png" alt="Facebook" height="32" width="32"/>
+                                    <span>Like on Facebook</span>
+                                </li> 
+                                <li>
+                                    <img src="img/twitter.png" alt="Twitter" height="32" width="32" />
+                                    <span>Follow on Twitter</span>
+                                </li>
+                                <li>
+                                    <img src="img/google-plus.png" alt="Google +" height="32" width="32" />
+                                    <span>+1 on Google Plus</span>
+                                </li>
+                            </ul>
+                        </div>
+                        &copy; 2012 Geodine  
+                    </div>
+                    <div id="bottom-right">
+                        <ul id="footer-nav">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">App</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
         </body>
-    </c:if>
+    </html>
+</c:if>
+<c:if test="${sessionScope.userName!=null}">
+    <c:redirect url="app.jsp"/> 
+</c:if>
 
 
-</html>
+

@@ -1,8 +1,4 @@
-<%-- 
-    Document   : recover
-    Created on : Sep 21, 2012, 6:01:23 PM
-    Author     : sushil
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -15,15 +11,15 @@
     </head>
     <body>
 
-    <h1>Recover Password</h1>
-    <form name="recover" action="">
-        <input class="hidden_param" type="hidden" name="type" value="recovery"/>
-        <input class="recovery_email" type="text" name="email"/>
-        <input class="recover" type="submit" name="submit" value="Recover Password" /></br>
-        <div class="status"></div>
-        
-    </form>
+        <h1>Recover Password</h1>
+        <form name="recover" action="">
+            <input class="hidden_param" type="hidden" name="type" value="recovery"/>
+            <input class="recovery_email" type="text" name="email"/>
+            <input class="recover" type="submit" name="submit" value="Recover Password" /></br>
+            <div class="status"></div>
 
-     
+        </form>
+
+
     </body>
 </html>

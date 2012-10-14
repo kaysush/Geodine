@@ -4,9 +4,57 @@
         <servlet-name>LoginAuthentication</servlet-name>
         <servlet-class>me.uni.sushilkumar.geodine.auth.LoginAuthentication</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FBLoginAuthentication</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.auth.FBLoginAuthentication</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Recover</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.auth.Recover</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RecoverEngine</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.auth.RecoverEngine</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FeedHandler</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.FeedHandler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WhatsCooking</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.WhatsCooking</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TurboFeeds</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.TurboFeeds</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginAuthentication</servlet-name>
         <url-pattern>/auth/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FBLoginAuthentication</servlet-name>
+        <url-pattern>/FBLoginAuthentication</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Recover</servlet-name>
+        <url-pattern>/auth/recover</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecoverEngine</servlet-name>
+        <url-pattern>/recover/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedHandler</servlet-name>
+        <url-pattern>/FeedHandler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WhatsCooking</servlet-name>
+        <url-pattern>/util/WhatsCooking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TurboFeeds</servlet-name>
+        <url-pattern>/TurboFeeds</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -15,16 +63,15 @@
     </session-config>
     <context-param>
         <param-name>dbHost</param-name>
-        <param-value>localhost</param-value>
+        <param-value>www.freesql.org:3306</param-value>
     </context-param>
-    
     <context-param>
         <param-name>dbUser</param-name>
-        <param-value>root</param-value>
+        <param-value>0120sushil</param-value>
     </context-param>
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value>sushil</param-value>
+        <param-value>Sarvesh0@</param-value>
     </context-param>
     <context-param>
         <param-name>dbName</param-name>

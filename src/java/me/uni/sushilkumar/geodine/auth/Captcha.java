@@ -38,10 +38,10 @@ public class Captcha extends HttpServlet {
         OutputStream out=response.getOutputStream();
         try {
             CaptchaGenerator captchaGen=new CaptchaGenerator(197,50);
+            BufferedImage captcha=captchaGen.createImage();
             String code=captchaGen.getCode();
             HttpSession session=request.getSession(true);
             session.setAttribute("captcha-code",code);
-            BufferedImage captcha=captchaGen.createImage();
             ImageIO.write(captcha, "png", out);
             
         } finally {            

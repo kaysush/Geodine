@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import me.uni.sushilkumar.geodine.db.DBConnection;
 
 /**
@@ -47,13 +48,22 @@ public class Signup extends HttpServlet {
             String lname=request.getParameter("last-name");
             String email=request.getParameter("user-name");
             String pass=request.getParameter("user-pass");
+            String captchaCode=request.getParameter("captcha-code");
+            HttpSession session=request.getSession(true);
+            if(!captchaCode.toLowerCase().equals(session.getAttribute("captcha-code")))
+                //response.sendRedirect("signup.jsp?captcha=error");
+                out.println("Error!!! WRONG Captcha code");
+            else
+            {
             boolean alreadyExists=con.alreadyExists(email);
             if(alreadyExists)
-                out.println("Email already exists");
+                //response.sendRedirect("signup.jsp?email=error");
+                out.println("Error!!! Email already exists");
             else
             {
                 con.signup(fname, lname, email, pass);
                 out.println("Congratulations. Signup Complete");
+            }
             }
             
             
@@ -81,7 +91,7 @@ public class Signup extends HttpServlet {
              
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Error at geodine :(</title>");  
+            out.println("<title>Error at geodine :(</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("Use <strong>POST</strong> instead of <strong>GET</strong>.");

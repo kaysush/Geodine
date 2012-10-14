@@ -28,40 +28,42 @@ private String code;
 
 	public CaptchaGenerator()
 	{
+            this.code= generateRandomCode(6);
 	}
 
 	public CaptchaGenerator(int width,int height)
 	{
 		this.width=width;
 		this.height=height;
+                this.code= generateRandomCode(6);
 		
 	}
+
 	
-	public String generateRandomCode(int length)
+	public final String generateRandomCode(int length)
 	{
-		StringBuilder code=new StringBuilder(length);
+		StringBuilder ccode=new StringBuilder(length);
 		Random generator=new Random();
 		for(int i=0;i<length;i++)
 		{
-			code.append(chars[generator.nextInt(62)]);
+			ccode.append(chars[generator.nextInt(62)]);
 		}
 		
-		return code.toString();
+		return ccode.toString();
 	}
 	
 	public BufferedImage createImage() throws IOException, FontFormatException
 	{
 		BufferedImage captcha=new BufferedImage(width,height,BufferedImage.TYPE_INT_BGR );
 		Graphics2D g=captcha.createGraphics();
-		code=generateRandomCode(6);
 		System.out.println(code);
 		g.setColor(Color.WHITE);
 		g.fill(new Rectangle2D.Float(0,0,width,height));
 		g.setColor(Color.RED);
 		InputStream in = CaptchaGenerator.class.getResourceAsStream("captcha.ttf");
-                Font font = Font.createFont(Font.TRUETYPE_FONT, in);
-                font=font.deriveFont(30.0F);
-                //Font font=new Font("Arial",Font.PLAIN,40);
+                //Font font = Font.createFont(Font.TRUETYPE_FONT, in);
+                //font=font.deriveFont(30.0F);
+                Font font=new Font("Arial",Font.PLAIN,40);
 		FontMetrics metrics = g.getFontMetrics(font);
 		g.setFont(font);
 		int actualWidth=metrics.stringWidth(code);
@@ -99,7 +101,7 @@ private String code;
         
         public String getCode()
         {
-            return code;
+            return code.toLowerCase();
         }
 	
     

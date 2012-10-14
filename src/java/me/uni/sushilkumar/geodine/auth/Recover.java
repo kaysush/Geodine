@@ -59,8 +59,7 @@ public class Recover extends HttpServlet {
                         Mailer mailer = new Mailer("info.geodine@gmail.com", "Sarvesh0@");
                         String body = "Goto http://projects-sushilkumar.rhcloud.com/geodine/recover/" + resetcode;
                         System.out.println("http://projects-sushilkumar.rhcloud.com/geodine/recover/" + resetcode);
-                        //boolean send = mailer.send(email, "Geodine Password Reset Request", body);
-                        boolean send=true;
+                        boolean send = mailer.send(email, "Geodine Password Reset Request", body);
                         if (!send) {
                             out.println("Unable to process the request");
                         } else {

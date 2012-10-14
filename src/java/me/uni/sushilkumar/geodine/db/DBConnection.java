@@ -245,6 +245,23 @@ public class DBConnection {
         }
         
     }
+    
+    public String getFeed(int rand) throws SQLException
+    {
+        String feed="";
+        PreparedStatement stmt=null;
+        String query="SELECT feed_content from datafeeds where id=?";
+        stmt=con.prepareStatement(query);
+        stmt.setInt(1, rand);
+        ResultSet rs = stmt.executeQuery();
+        boolean first = rs.first();
+        if(first)
+            feed=rs.getString("feed_content");
+        else
+            feed="Unable to fetch facts";
+        return feed;
+        
+    }
 
     public static void main(String[] args) {
         DBConnection obj = new DBConnection("0120sushil", "Sarvesh0@", "www.freesql.org:3306", "geodine");
