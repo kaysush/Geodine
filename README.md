@@ -1,10 +1,13 @@
 Geodine
 =======
 
-A J2EE web application for food discovery against geographical locations.
--------------------------------------------------------------------------
+A J2EE web application for food discovery against geographical
+locations.
 
-This website is currently hosted [here][]
+This website is currently hosted [here][].
+
+This app uses J2EE Servlet ,JDBC,Java Mail api for robust and verbose
+content delivery.
 
 Designed by : [Shiva Seth][]
 
