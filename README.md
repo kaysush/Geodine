@@ -11,6 +11,6 @@ content delivery.
 
 Designed by : [Shiva Seth][]
 
-  [here]: http://projects-sushilkumar.rhcloud.com
+  [here]: http://projects-sushilkumar.rhcloud.com/geodine
     "Geodine-A new approach for foodies"
   [Shiva Seth]: mailto:shiva_seth1@live.com "Shiva Seth"
