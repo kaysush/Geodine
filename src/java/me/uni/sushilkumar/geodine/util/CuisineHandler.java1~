@@ -1,0 +1,160 @@
+/*
+ * Copyright Sushil Kumar <0120sushil@gmail.com>.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *     http://www.apache.org/licenses/LICENSE-2.0
+
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * under the License.
+ */
+package me.uni.sushilkumar.geodine.util;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+/**
+ *
+ * @author Sushil Kumar <0120sushil@gmail.com>
+ */
+@WebServlet(name = "CuisineHandler", urlPatterns = {"/cuisine/*"})
+public class CuisineHandler extends HttpServlet {
+
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, ParseException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String path = request.getRequestURI();
+        int index = path.lastIndexOf("/");
+        String cuisine = path.substring(index + 1);
+        cuisine = cuisine.replace("-", " ");
+        out.println("<h1>" + cuisine + "</h1>");
+        try {
+            URL url = new URL("http://api.yummly.com/v1/api/recipes?q=" + URLEncoder.encode(cuisine, "UTF-8") + "&_app_id=bad04ef2&_app_key=f2df74726bb514d9390abf1e6c9ad4f0&requirePictures=true");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            JSONParser parser = new JSONParser();
+            Object json = parser.parse(br);
+            JSONObject obj = (JSONObject) json;
+            JSONArray matches = (JSONArray) obj.get("matches");
+            Iterator<JSONObject> it = matches.iterator();
+            JSONObject temp = it.next();
+            String id = (String) temp.get("id");
+            out.println(id);
+            URL u = new URL("http://api.yummly.com/v1/api/recipe/" + id + "?_app_id=bad04ef2&_app_key=f2df74726bb514d9390abf1e6c9ad4f0");
+            Object rjson = parser.parse(new BufferedReader(new InputStreamReader(u.openStream())));
+            JSONObject robj = (JSONObject) rjson;
+            JSONObject source = (JSONObject) robj.get("source");
+            String sourceUrl = (String) source.get("sourceRecipeUrl");
+            String provider = (String) source.get("sourceDisplayName");
+            out.println("<h1>" + sourceUrl + "</h1>");
+            out.println("<h1>" + provider + "</h1>");
+
+            Document doc = Jsoup.connect(sourceUrl).get();
+            Element directionClass = null;
+            Elements ols = null;
+
+            if (provider.equals("Epicurious")) {
+                directionClass = doc.select("div.instructions").first();
+                ols = directionClass.getElementsByTag("p");
+            } else if (provider.equals("Food Network")) {
+                directionClass = doc.select("div[itemprop=recipeInstructions]").first();
+                ols = directionClass.getElementsByTag("p");
+            } else if (provider.equals("Martha Stewart")) {
+                directionClass = doc.select("div.instructions").first();
+                ols = directionClass.getElementsByTag("li");
+            } else if (provider.equals("MyRecipes")) {
+                directionClass = doc.select("ol[itemprop=instructions]").first();
+                ols = directionClass.getElementsByTag("li");
+            } else {
+                directionClass = doc.select("div.directions").first();
+                ols = directionClass.getElementsByTag("li");
+            }
+            out.println("<ol>");
+            for (Element ol : ols) {
+                out.println("<li>" + ol.text() + "</li>");
+            }
+            out.println("</ol>");
+
+        } finally {
+            out.close();
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /** 
+     * Handles the HTTP <code>GET</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(CuisineHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /** 
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(CuisineHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /** 
+     * Returns a short description of the servlet.
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+}

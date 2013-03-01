@@ -36,48 +36,34 @@ public class FBLoginAuthentication extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out=response.getWriter();
+        PrintWriter out = response.getWriter();
         try {
-           String code=request.getParameter("code"),auth_code="",responseStr,jsonResponse="",jsonResponse1="",id="";
-        int index=0,index1=0,index2=0;
+            String code = request.getParameter("code"), auth_code = "", responseStr, jsonResponse = "", jsonResponse1 = "", id = "";
+            int index = 0, index1 = 0, index2 = 0;
             response.setContentType("text/html");
-            URL authCode=new URL("https://graph.facebook.com/oauth/access_token?client_id=326194097435770&redirect_uri=http://projects-sushilkumar.rhcloud.com/geodine/FBLoginAuthentication&client_secret=3756f2742028c8f792704d008adc2c0d&code="+code);
-            BufferedReader in=new BufferedReader(new InputStreamReader(authCode.openStream()));
-            while((responseStr=in.readLine())!=null)
-                auth_code+=responseStr;
+            URL authCode = new URL("https://graph.facebook.com/oauth/access_token?client_id=326194097435770&redirect_uri=http://projects-sushilkumar.rhcloud.com/geodine/FBLoginAuthentication&client_secret=3756f2742028c8f792704d008adc2c0d&code=" + code);
+            BufferedReader in = new BufferedReader(new InputStreamReader(authCode.openStream()));
+            while ((responseStr = in.readLine()) != null) {
+                auth_code += responseStr;
+            }
             in.close();
-            index=auth_code.indexOf("access_token=");
-            auth_code=auth_code.substring(index+13);
-            index=auth_code.indexOf("&expires");
-            auth_code=auth_code.substring(0,index);
-            HttpSession session=request.getSession(true);
-            URL nameURL=new URL("https://graph.facebook.com/me?access_token="+auth_code);
-            BufferedReader br=new BufferedReader(new InputStreamReader(nameURL.openStream()));
-            JSONParser parser=new JSONParser();
-            Object  json=parser.parse(br);
-            JSONObject obj=(JSONObject)json;
-            String email=(String) obj.get("email");
-            String name=(String) obj.get("name");
+            index = auth_code.indexOf("access_token=");
+            auth_code = auth_code.substring(index + 13);
+            index = auth_code.indexOf("&expires");
+            auth_code = auth_code.substring(0, index);
+            HttpSession session = request.getSession(true);
+            URL nameURL = new URL("https://graph.facebook.com/me?access_token=" + auth_code);
+            BufferedReader br = new BufferedReader(new InputStreamReader(nameURL.openStream()));
+            JSONParser parser = new JSONParser();
+            Object json = parser.parse(br);
+            JSONObject obj = (JSONObject) json;
+            String email = (String) obj.get("email");
+            String name = (String) obj.get("name");
             session.setAttribute("userName", email);
             session.setAttribute("name", name);
             session.setAttribute("access_token", auth_code);
             response.sendRedirect("/geodine/app.jsp");
-            /*out.println(" <!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<script type=\"text/javascript\">");
-            out.println("function init()");
-            out.println("{");
-            out.println("window.close();");
-            out.println("}");
-            out.println("</script>");
-            out.println("</head>");
-            out.println("<body onload=\"init()\">");
-            out.println("</body>");
-            out.println("</html>");*/
-
-            
-        } finally {            
+        } finally {
             out.close();
         }
     }

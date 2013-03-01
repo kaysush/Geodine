@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import me.uni.sushilkumar.geodine.db.DBConnection;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,66 +44,107 @@ public class GetCountry extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
+        /* The DB LOGIN logic  */
+        String dbHost = getServletContext().getInitParameter("dbHost");
+        String dbUser = getServletContext().getInitParameter("dbUser");
+        String dbPassword = getServletContext().getInitParameter("dbPassword");
+        String dbName = getServletContext().getInitParameter("dbName");
         PrintWriter out = response.getWriter();
-        
-        String country="";
-        boolean found=false;
-        try {
-            JSONParser parser=new JSONParser();
-try
-{
-URL u=new URL("http://maps.googleapis.com/maps/api/geocode/json?latlng="+request.getParameter("latlng")+"&sensor=true");
-HttpURLConnection conn=(HttpURLConnection)u.openConnection();
-BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-JSONObject obj=(JSONObject)parser.parse(br);
-String status=(String)obj.get("status");
-if(status.equals("OK"))
-{
-JSONArray results=(JSONArray)obj.get("results");
-Iterator<JSONObject> resultIt=results.iterator();
-while(resultIt.hasNext())
-{
-JSONObject temp=resultIt.next();
-JSONArray address=(JSONArray)temp.get("address_components");
-Iterator<JSONObject> addressIt=address.iterator();
-while(addressIt.hasNext())
-{
-JSONObject temptype=addressIt.next();
-JSONArray type=(JSONArray)temptype.get("types");
-Iterator<String> typeIt=type.iterator();
-while(typeIt.hasNext())
-{
-String tempcountry=typeIt.next();
-if(tempcountry.equals("country"))
-{
-country=(String)temptype.get("long_name");
-found=true;
-break;
-}
-}
-if(found)
-break;
-}
-if(found)
-break;
-}
-out.println(country);
-}
-else
-out.println("No Country Selected");
-}
+        DBConnection con = null;
 
-catch(IOException e){
-e.printStackTrace();
-}
-catch(ParseException e){
-e.printStackTrace();
-}
-        
-           
-        } finally {            
+        String country = "";
+        boolean found = false;
+        try {
+            JSONParser parser = new JSONParser();
+            try {
+                //con = new DBConnection(dbUser, dbPassword, dbHost, dbName);
+                con = new DBConnection();
+                URL u = new URL("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + request.getParameter("latlng") + "&sensor=true");
+                HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                JSONObject obj = (JSONObject) parser.parse(br);
+                String status = (String) obj.get("status");
+                if (status.equals("OK")) {
+                    JSONArray results = (JSONArray) obj.get("results");
+                    Iterator<JSONObject> resultIt = results.iterator();
+                    while (resultIt.hasNext()) {
+                        JSONObject temp = resultIt.next();
+                        JSONArray address = (JSONArray) temp.get("address_components");
+                        Iterator<JSONObject> addressIt = address.iterator();
+                        while (addressIt.hasNext()) {
+                            JSONObject temptype = addressIt.next();
+                            JSONArray type = (JSONArray) temptype.get("types");
+                            Iterator<String> typeIt = type.iterator();
+                            while (typeIt.hasNext()) {
+                                String tempcountry = typeIt.next();
+                                if (tempcountry.equals("country")) {
+                                    country = (String) temptype.get("long_name");
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found) {
+                                break;
+                            }
+                        }
+                        if (found) {
+                            break;
+                        }
+                    }
+                    //out.println(country);
+                    ArrayList<String> cuisines = new ArrayList<String>();
+                    cuisines = con.getCuisines(country);
+                    out.println("<div class='country_name'>" + country + "</div");
+                    out.println("<hr/>");
+                    if (cuisines.isEmpty()) {
+                        out.println("No Cuisines Found");
+                    }
+                    
+                    out.println("<div class='cuisine_container'>");
+                    for (int i = 0; i < cuisines.size(); i++) {
+                        String[] data=cuisines.get(i).split("\\+");
+                        //out.println("<a href='#' class='cuisine'>" + data[1] + "</a></br>");
+                        out.println("<div class='cuisine'>");
+                        out.println("<img class='cuisine_img' width=100 height=100 src="+data[1]+">");
+                        out.println("<a href='#'>"+data[0]+"</a>");
+                        out.println("</div>");
+                    }
+                    out.println("</div>");
+                } else {
+                    out.println("No Country Selected");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(GetCountry.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GetCountry.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(GetCountry.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+        } finally {
             out.close();
         }
+    }
+    
+    public String getImageUrl(String id) throws IOException
+    {
+        String url="";
+        try {
+            JSONParser parser=new JSONParser();
+                URL u = new URL("http://api.yummly.com/v1/api/recipe/" + id + "?_app_id=bad04ef2&_app_key=f2df74726bb514d9390abf1e6c9ad4f0");
+                Object json = parser.parse(new BufferedReader(new InputStreamReader(u.openStream())));
+                JSONObject obj = (JSONObject) json;
+                JSONArray images=(JSONArray) obj.get("images");
+                Iterator<JSONObject> it=images.iterator();
+                JSONObject temp=it.next();
+                url=(String) temp.get("hostedLargeUrl");
+        } catch (ParseException ex) {
+            Logger.getLogger(GetCountry.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(GetCountry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return url;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

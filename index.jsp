@@ -54,20 +54,20 @@
                     <div class="navbar">
                         <ul>
                             <li>
-                                <img src="img/home.png" height="64" width="64" alt="home" />
-                                <span>Home</span>
+                                <a href="/geodine"><img src="img/home.png" height="64" width="64" alt="home" /></a>
+                                <span id="home">Home</span>
                             </li>
                             <li>
-                                <img src="img/app.png" height="64" width="64" alt="Goto to App" />
-                                <span>Goto App</span>
+                                <a href="/geodine/app"><img src="img/app.png" height="64" width="64" alt="Goto to App" /></a>
+                                <span id="app">Goto App</span>
                             </li>
                             <li>
-                                <img src="img/blog.png" height="64" width="64" alt="Visit our blog" />
-                                <span>Visit  our Blog</span>
+                                <a href="/geodine/blog/"><img src="img/blog.png" height="64" width="64" alt="Visit our blog" /></a>
+                                <span id="blog">Visit  our Blog</span>
                             </li>
                             <li>
-                                <img src="img/contactus.png" height="64" width="64" alt="Contact Us" />
-                                <span>Contact Us</span>
+                                <a href="/geodine/contact.jsp"><img src="img/contactus.png" height="64" width="64" alt="Contact Us" /></a>
+                                <span id="contact">Contact Us</span>
                             </li>
                         </ul>
                     </div>
@@ -233,16 +233,16 @@
                             <span>Feeling little social? Spread the buzz, share with your friends</span><br/>
                             <ul>
                                 <li>
-                                    <img src="img/facebook.png" alt="Facebook" height="32" width="32"/>
-                                    <span>Like on Facebook</span>
+                                    <a href="#"><img src="img/facebook.png" alt="Facebook" height="32" width="32"/>
+                                        <span>Like on Facebook</span></a>
                                 </li> 
                                 <li>
-                                    <img src="img/twitter.png" alt="Twitter" height="32" width="32" />
-                                    <span>Follow on Twitter</span>
+                                    <a href="#"><img src="img/twitter.png" alt="Twitter" height="32" width="32" />
+                                        <span>Follow on Twitter</span></a>
                                 </li>
                                 <li>
-                                    <img src="img/google-plus.png" alt="Google +" height="32" width="32" />
-                                    <span>+1 on Google Plus</span>
+                                    <a href="#"><img src="img/google-plus.png" alt="Google +" height="32" width="32" />
+                                        <span>+1 on Google Plus</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -250,10 +250,10 @@
                     </div>
                     <div id="bottom-right">
                         <ul id="footer-nav">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">App</a></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="/geodine">Home</a></li>
+                            <li><a href="blog">Blog</a></li>
+                            <li><a href="app">App</a></li>
+                            <li><a href="contact">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -264,7 +264,7 @@
     </html>
 </c:if>
 <c:if test="${sessionScope.userName!=null}">
-    <c:redirect url="app.jsp"/> 
+    <c:redirect url="app"/> 
 </c:if>
 
 

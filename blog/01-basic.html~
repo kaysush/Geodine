@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head>
+  <title>Example: Basic - jWYSIWYG</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="../jwysiwyg/jquery.wysiwyg.css" type="text/css" />
+  <link rel="stylesheet" href="examples.css" type="text/css" />
+  <script type="text/javascript" src="../jquery/jquery-1.3.2.js"></script>
+  <script type="text/javascript" src="../jwysiwyg/jquery.wysiwyg.js"></script>
+  <script type="text/javascript">
+  $(function()
+  {
+      $('#wysiwyg').wysiwyg();
+  });
+$(document).ready(function()
+{
+		$("button").click(function()
+		{
+			var val=$("#wysiwyg").val();
+			var title=$("#title").val();
+			var dataString="&title="+title+"&body="+val;
+//			alert(dataString);
+			$.ajax({
+				type:"POST",
+				url:"/geodine/blog/posthandler",
+				success:function()
+				{
+					alert('Posted');
+				}
+				
+			});
+		});
+});
+  </script>
+</head>
+
+<body>
+<label for="title">Title :</label>
+<input type="text" name="title" id="title"/>
+  <div>
+    <textarea  name="wysiwyg" id="wysiwyg" rows="5" cols="47"></textarea>
+	<button>Submit</button>
+  </div>
+<div id="show"></div>
+</body>
+</html>

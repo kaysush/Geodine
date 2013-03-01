@@ -17,11 +17,13 @@ package me.uni.sushilkumar.geodine.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import me.uni.sushilkumar.geodine.db.DBConnection;
 
 /**
  *
@@ -40,14 +42,22 @@ public class TurboFeeds extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        DBConnection con=new DBConnection();
         try {
             
-            Random rand=new Random();
+            /*Random rand=new Random();
             out.println("<ul>");
             for(int i=0;i<3;i++)
             {
                 
                 out.println("<li><a href=\"#\">Blog Post "+rand.nextInt(1000)+"</a></li>");
+            }
+            out.println("</ul>");*/
+            ArrayList<String> title=con.getFeeds();
+            out.println("<ul>");
+            for(int i=0;i<title.size();i++)
+            {
+                out.println("<li><a href=\"blog\">Blog Post "+title.get(i) +"</a></li>");
             }
             out.println("</ul>");
         } finally {            

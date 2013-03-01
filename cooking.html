@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript" >
+$(document).ready(function()
+{
+	$("#button").click(function()
+	{
+		$.getJSON('http://localhost:8080/geodine/util/WhatsCooking',function(data)
+		{
+			
+			$.each(data['links'],function(i,row){
+			$('.downloads').append('<li><a href='+row.link+'>'+row.title+'</a></li>');
+			});
+			
+		});
+	});
+});
+
+</script>
+</head>
+<body>
+<button id="button" >Click</button>
+<div class="downloads"></div>
+</body>
+</html>

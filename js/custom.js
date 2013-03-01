@@ -1,10 +1,11 @@
 var index=1;
-$(document).ready(function($) { 
+$(document).ready(function($) {
 
     
     loadFeeds();
     loadFacts();
     loadBlogFeeds();
+    loadRandomVideo();
     
     setInterval(function(){
         console.log("Loading Facts....");
@@ -79,13 +80,31 @@ $(document).ready(function($) {
 
   
     $(".navbar span").hide();
+    var x=document.URL ;
+    if(x=="http://localhost:8084/geodine/")
+        $('#home').fadeIn();
+    else if(x=="http://localhost:8084/geodine/contact.jsp")
+        $('#contact').fadeIn();
+    else if(x=="http://localhost:8084/geodine/app/")
+        $('#app').fadeIn();
+    else if(x=="http://localhost:8084/geodine/blog/")
+        $('#blog').fadeIn();
     $(".navbar ul li").mouseover(function()
     {
         $(this).children("span").fadeIn(200);
     });
     $(".navbar ul li").mouseout(function()
-    {
-        $(this).children("span").fadeOut(100);
+    {$(this).children("span").fadeOut(100);
+        var x=document.URL ;
+        if(x=="http://localhost:8084/geodine/")
+            $('#home').fadeIn();
+        else if(x=="http://localhost:8084/geodine/contact.jsp")
+            $('#contact').fadeIn();
+        else if(x=="http://localhost:8084/geodine/app/")
+            $('#app').fadeIn();
+        else if(x=="http://localhost:8084/geodine/blog/")
+            $('#blog').fadeIn();
+        
     });
 
 
@@ -95,19 +114,21 @@ $(document).ready(function($) {
         bind: 
         { 
             mouseover : function() { 
-                $(this).children("img").rotate({
+                var a=$(this).children("a");
+                a.children("img").rotate({
                     animateTo:360
                 })
-                $(this).children("span").stop(true,true).animate({
+                a.children("span").stop(true,true).animate({
                     "color":"blue",
                     "font-size":"20px"
                 },500,function(){});
             },
-            mouseout : function() { 
-                $(this).children("img").rotate({
+            mouseout : function() {
+                var a=$(this).children("a");
+                a.children("img").rotate({
                     animateTo:0
                 })
-                $(this).children("span").stop(true,true).animate({
+                a.children("span").stop(true,true).animate({
                     "color":"black",
                     "font-size":"12px"
                 },500,function(){});
@@ -234,6 +255,20 @@ function loadBlogFeeds()
     $(".blog-feed").load("TurboFeeds",function(data){
            
         });
+}
+
+function loadRandomVideo()
+{
+    var iframe=$("#ytplayer");
+    $.ajax({
+        type:"POST",
+        url:"youtube",
+        data:"&type=random",
+        success:function(data)
+        {
+            iframe.attr("src","https://www.youtube.com/embed/"+data)
+        }
+    });
 }
 
 

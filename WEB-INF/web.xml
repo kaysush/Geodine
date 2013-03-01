@@ -28,6 +28,42 @@
         <servlet-name>TurboFeeds</servlet-name>
         <servlet-class>me.uni.sushilkumar.geodine.util.TurboFeeds</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>YummlyLookup</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.YummlyLookup</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>YoutubeSearch</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.YoutubeSearch</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RecentCuisines</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.RecentCuisines</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FavouriteHandler</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.FavouriteHandler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FetchFavourite</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.FetchFavourite</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TurboPost</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.blog.TurboPost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PdfGenerator</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.PdfGenerator</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ContactUs</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.ContactUs</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>me.uni.sushilkumar.geodine.util.Logout</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginAuthentication</servlet-name>
         <url-pattern>/auth/login</url-pattern>
@@ -56,6 +92,42 @@
         <servlet-name>TurboFeeds</servlet-name>
         <url-pattern>/TurboFeeds</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>YummlyLookup</servlet-name>
+        <url-pattern>/util/yummly</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>YoutubeSearch</servlet-name>
+        <url-pattern>/youtube</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecentCuisines</servlet-name>
+        <url-pattern>/util/recent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FavouriteHandler</servlet-name>
+        <url-pattern>/util/favourites</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FetchFavourite</servlet-name>
+        <url-pattern>/util/fetchfavourite</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TurboPost</servlet-name>
+        <url-pattern>/blog/posthandler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PdfGenerator</servlet-name>
+        <url-pattern>/util/pdf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContactUs</servlet-name>
+        <url-pattern>/contactus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -63,18 +135,24 @@
     </session-config>
     <context-param>
         <param-name>dbHost</param-name>
-        <param-value>www.freesql.org:3306</param-value>
+        <param-value>localhost</param-value>
     </context-param>
     <context-param>
         <param-name>dbUser</param-name>
-        <param-value>0120sushil</param-value>
+        <param-value>root</param-value>
     </context-param>
     <context-param>
         <param-name>dbPassword</param-name>
-        <param-value>Sarvesh0@</param-value>
+        <param-value/>
     </context-param>
     <context-param>
         <param-name>dbName</param-name>
         <param-value>geodine</param-value>
     </context-param>
+    <resource-ref>
+        <description>MySQL Datasource example</description>
+        <res-ref-name>jdbc/sushil</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 </web-app>

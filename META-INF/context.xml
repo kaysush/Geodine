@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/geodine"/>
+<Context antiJARLocking="true" path="/geodine"> 
+  <Resource name="jdbc/sushil" auth="Container" type="javax.sql.DataSource"
+               maxActive="200" maxIdle="10" maxWait="10000"
+               username="root" password=""
+               driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/geodine"/>
+ 
+</Context>
+
